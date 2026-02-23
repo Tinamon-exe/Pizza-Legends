@@ -6,19 +6,23 @@ body {
   background: #333;
   padding: 0;
   margin: 0;
-  overflow: hidden;
+  overflow: hidden; /* stops arrows from scrowling */
 }
 
 .game-container {
   position: relative; 
   width: 352px;
   height: 198px;
-  margin: 0 auto;
-  outline: 1px solid #fff;
+  margin: 0 auto; /* get container centered in x direction */
+  outline: 1px solid #fff; /* see game container */
 
+  /* Scale up game container (
+    scale(3)=multiply every pixel by 3
+    ranslateY(50%)= Since scale, scales from the middle, the upper part will be cutoff, so this pushes down the image */
   transform: scale(3) translateY(50%);
 }
 
+/* get rid of the fuzzines in any canvas, evenly multiply every pixel */
 .game-container canvas {
   image-rendering: pixelated;
 }
