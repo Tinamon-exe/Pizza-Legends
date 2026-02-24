@@ -70,9 +70,9 @@ class Sprite {
         }
     }
 
-    draw(ctx) {
-        const x = this.gameObject.x-8;  // -8 since the sprite may be 32X32 but the art is a little bit smaller
-        const y = this.gameObject.y-18; // -18 since the sprite may be 32X32 but the art is a little bit smaller
+    draw(ctx, cameraPerson) {
+        const x = this.gameObject.x-8+utils.withGrid(10.5)-cameraPerson.x;  // -8 since the sprite may be 32X32 but the art is a little bit smaller, utils.withGrid(10.5) beacause the canvas is 22 tiles long so (22-1)/2=10.5, -cameraPerson.x to keep cameraperson in the middle
+        const y = this.gameObject.y-18+utils.withGrid(6)-cameraPerson.y; // -18 since the sprite may be 32X32 but the art is a little bit smaller, utils.withGrid(10.5) beacause the canvas is 13 tiles heigh so (13-1)/2=6, -cameraPerson.y to keep cameraperson in the middle
 
         // Draw Shadow before character
         this.isShadowLoaded && ctx.drawImage(
