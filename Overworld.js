@@ -4,80 +4,36 @@ class Overworld {
    this.element = config.element; // TODO
    this.canvas = this.element.querySelector(".game-canvas"); // TODO
    this.ctx = this.canvas.getContext("2d"); //Access to drawing methodes
+   this.map = null;
+ }
+ //TODO: What exactly is ctx (see in Sprites.js or OverwoldMaps.js)
+
+ startGameLoop() {
+  const step = () => {
+    // Clear canvas
+    this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height);
+
+    // Draw lower Layer
+    this.map.drawLowerImage(this.ctx);
+    
+    // Draw game Objects
+    Object.values(this.map.gameObjects).forEach(object => { //Object.values gets the values of a dictionary
+      object.x += 0.02;
+      object.sprite.draw(this.ctx);
+    })
+
+    // Draw lower Layer
+    this.map.drawUpperImage(this.ctx);
+    requestAnimationFrame(() => { //requestAnimationFrame is a browser callback function (browser calls back whenever new fram begins)
+      step();
+    }) 
+  }
+  step();
  }
 
  init() {
-  // console.log("hello from the Overworld", this)
-  
-  // Get overworld image
-   const image = new Image();
-   image.onload = () => {
-     this.ctx.drawImage(image,0,0) //draw image at point (0,0)
-   };
-   image.src = "/images/maps/DemoLower.png";
-
-   //Get x and y coorinates for the hero and the shadow
-  //  const x = 5;
-  //  const y = 6;
-  
-  // // Get shadow image (need to be between overworld and hero)
-  //  const shadow = new Image();
-  //  shadow.onload = () => {
-  //   this.ctx.drawImage(
-  //     shadow, 
-  //     0, //left cut 
-  //     0, //top cut,
-  //     32, //width of cut
-  //     32, //height of cut
-  //     x * 16 - 8,
-  //     y * 16 - 18,
-  //     32,
-  //     32
-  //  )
-  //  }
-  //  shadow.src = "/images/characters/shadow.png";
-
-  // // Get hero image
-  //  const hero = new Image();
-  //  hero.onload = () => {
-  //    this.ctx.drawImage(
-  //      hero, 
-  //      0, //left cut 
-  //      0, //top cut,
-  //      32, //width of cut
-  //      32, //height of cut
-  //      x * 16 - 8,  // * 16 since ever tile is 16x16,  -8 since the sprite may be 32X32 but the art is a little bit smaller
-  //      y * 16 - 18, // * 16 since ever tile is 16x16, -18 since the sprite may be 32X32 but the art is a little bit smaller
-  //      32, //size/scale of cut x
-  //      32  // size/scale of cut y
-  //   )
-  //  }
-  //  hero.src = "/images/characters/people/hero.png";
-
-
-
-
-
-  // Place some Game Objects
-  const hero = new GameObject({
-    //Get x and y coorinates for the hero and the shadow
-    x: 5,
-    y: 6,
-
-  })
-
-  const npc1 = new GameObject({
-    x: 7,
-    y: 9,
-    src: "/images/characters/people/npc1.png"
-    
-  })
-
-  setTimeout(() => {
-    hero.sprite.draw(this.ctx)
-    npc1.sprite.draw(this.ctx) 
-  }, 200)
-  
+  this.map = new OverworldMap(window.OverworldMaps.Kitchen)
+  this.startGameLoop();
  }
 
 }
