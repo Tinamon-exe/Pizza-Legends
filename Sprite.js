@@ -32,8 +32,8 @@ class Sprite {
     }
 
     draw(ctx) {
-        const x = this.gameObject.x*16-8; // * 16 since ever tile is 16x16,  -8 since the sprite may be 32X32 but the art is a little bit smaller
-        const y = this.gameObject.y*16-18; // * 16 since ever tile is 16x16, -18 since the sprite may be 32X32 but the art is a little bit smaller
+        const x = this.gameObject.x-8; // * 16 since ever tile is 16x16,  -8 since the sprite may be 32X32 but the art is a little bit smaller
+        const y = this.gameObject.y-18; // * 16 since ever tile is 16x16, -18 since the sprite may be 32X32 but the art is a little bit smaller
 
         // Draw Shadow before character
         this.isShadowLoaded && ctx.drawImage(

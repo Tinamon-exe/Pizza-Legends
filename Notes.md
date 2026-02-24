@@ -23,3 +23,7 @@ localhost:8000
 He used a pixel art editor that is called "ASprite" I think.
 
 I tried https://www.pixilart.com. Here I had some problems with resizing the grid but was ok.
+
+# To keep in mind
+
+- In the gameloop we will just work with step, however, we should take into account that on slower/faster pcs this will show the game running faste/slower. Fixed by a time tracking function.
