@@ -15,33 +15,58 @@ class Person extends GameObject {
     }
 
     update(state) {
-        this.updatePosition();
-        this.updateSprite(state);
+        if (this.movingProgressRemaining>0) {
+            this.updatePosition();
+        } else {
+            // More cases for starting to walk will come here
+            // 
+            //             
+            //Case: we're keyboard ready and have an arrow pressed
+            if (this.isPlayerControlled && state.arrow){
+                this.startBehaviour(state, {
+                    type: "walk",
+                    direction: state.arrow
+                })
 
-        if (this.isPlayerControlled && this.movingProgressRemaining===0 && state.arrow){
-            this.direction = state.arrow;
-            this.movingProgressRemaining=16;
-
+            }
+            this.updateSprite(state); 
         }
+        
+
+        
+    }
+
+    startBehaviour(state, behaviour){
+        //Set character direction to whatever behaviour has
+        this.direction = behaviour.direction;
+
+        //stop if space is not free
+        if (behaviour.type === "walk"){
+            if (state.map.isSpaceTaken(this.x,this.y,this.direction)){
+                return;
+            }
+        }
+
+        //Ready to walk
+        state.map.moveWall(this.x,this.y, this.direction)
+        this.movingProgressRemaining=16;
+        
     }
 
     updatePosition() {
-        if (this.movingProgressRemaining>0) {
+        
             const [property, change] = this.directionUpdate[this.direction]; //eg. if direction = "down"=> property=y, change =1
             this[property] += change; //TODO What does that mean, what is property ment by itself?
             this.movingProgressRemaining -= 1;
-        }
     }
 
-    updateSprite(state){
-        if (this.isPlayerControlled && this.movingProgressRemaining===0 && !state.arrow){
-            this.sprite.setAnimation("idle-"+this.direction);
+    updateSprite(){
+        if (this.movingProgressRemaining>0){
+            this.sprite.setAnimation("walk-"+this.direction);
             return;
         }
 
-        if (this.movingProgressRemaining>0){
-            this.sprite.setAnimation("walk-"+this.direction);
-        }
+        this.sprite.setAnimation("idle-"+this.direction);
     }
 
     
